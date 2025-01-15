@@ -1,0 +1,32 @@
+version: '2.2'
+services:
+  api:
+      image: php
+      build: .
+      volumes:
+        - .:/var/www/html
+      ports:
+        - "8080:80"
+      networks:
+        - app      
+  db:
+    image: "mariadb"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "vbytes_inventory"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      -  "appdb:/var/lib/mysql"
+    networks:
+      - app   
+networks:
+  app:
+    driver: bridge
+volumes:
+  appdb:
+    driver: local
+
