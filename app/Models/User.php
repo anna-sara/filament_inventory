@@ -6,7 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Game;
+use App\Models\Item;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -47,11 +49,8 @@ class User extends Authenticatable
         ];
     }
 
-     /**
-     * Get the games for the user.
-     */
-    public function game(): HasMany
+    public function reserveditems()
     {
-        return $this->hasMany(Game::class);
+        return $this->belongsToMany(Reserveditem::class, 'user_reserveditems')->withTimestamps();
     }
 }
