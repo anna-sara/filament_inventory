@@ -19,27 +19,27 @@ class ReserveditemsOverview extends BaseWidget
             ->query(
                 Reserveditem::where('user_id', auth()->id())->where('returned', false)
             )
-            ->heading('Dina lånade items')
+            ->heading('Your reserved items')
             ->columns([
                 Tables\Columns\TextColumn::make('item.desc')
-                    ->label('Beskrivning')
+                    ->label('Description')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('item.image')
-                    ->label('Bild'),
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('reserved_date')
-                    ->label('Reserveringsdatum')
+                    ->label('Reserved date')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('return_date')
-                    ->label('Återlämnningsdatum')
+                    ->label('Return date')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('delivered')
-                    ->label('Utlämnad')
+                    ->label('Delivered')
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark')
                     ->trueColor('success')
                     ->falseColor('danger'),
                 Tables\Columns\IconColumn::make('returned')
-                    ->label('Återlämnad')
+                    ->label('Returned')
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark')
                     ->trueColor('success')

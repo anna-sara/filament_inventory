@@ -31,7 +31,7 @@ class ReserveditemResourceUser extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('item_id')
-                ->label('Välj item att låna')
+                ->label('Choose an item to reserve')
                    ->relationship(
                        name: 'item', 
                        titleAttribute: 'desc',
@@ -52,22 +52,22 @@ class ReserveditemResourceUser extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('items.desc')
-                    ->label('Namn')
+                    ->label('Name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('username')
-                    ->label('Användare')
+                    ->label('User')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('reserved_date')
-                    ->label('Reserveringsdatum')
+                    ->label('Reserved date')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('delivered_date')
-                    ->label('Utlämningsdatum')
+                    ->label('Delivery date')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('return_date')
-                    ->label('Återlämningsdatum')
+                    ->label('Return date')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('returned_date')
-                    ->label('Återlämnad')
+                    ->label('Returned')
                     ->sortable(),
             ])
             ->filters([

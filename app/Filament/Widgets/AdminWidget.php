@@ -16,9 +16,9 @@ class AdminWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Card::make('Totalt antal användare', User::count() ),
-            Card::make('Totalt antal items', Item::count() ),
-            Card::make('Utlånande items', Reserveditem::count() ),
+            Card::make('Total number of users', User::count() ),
+            Card::make('Total number of items', Item::count() ),
+            Card::make('Reserved items', Reserveditem::count() ),
         ];
     }
 

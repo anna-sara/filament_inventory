@@ -19,9 +19,9 @@ class TypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark';
 
-    protected static ?string $modelLabel = 'Items types';
+    protected static ?string $modelLabel = 'Item types';
 
-    protected static ?string $title = 'Items Types';
+    protected static ?string $title = 'Item Types';
 
     public static function form(Form $form): Form
     {
@@ -38,7 +38,7 @@ class TypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Namn')
+                    ->label('Name')
                     ->searchable(),
             ])
             ->filters([

@@ -25,37 +25,38 @@ class ItemResource extends Resource
 
     protected static ?string $modelLabel = 'Items';
 
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('image')
-                ->label('Bild')
+                ->label('Image')
                 ->minSize(512)
-                ->maxSize(1024)
+                ->maxSize(5500)
                 ->columnSpan('full')
                 ->image(),
                 Forms\Components\TextInput::make('desc')
-                    ->label('Beskrivning')
+                    ->label('Description')
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\DatePicker::make('acquisition_date')
-                    ->label('Inköpsdatum'),
+                    ->label('Acquisition date'),
                 Forms\Components\TextInput::make('quantity')
-                    ->label('Antal')
+                    ->label('Quantity')
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(1000)
                     ->default(0),
                 Forms\Components\Select::make('type_id')
-                    ->label('Typ')
+                    ->label('Type')
                     ->options(Type::all()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\TextInput::make('cost')
-                    ->label('Kostnad')
+                    ->label('Price')
                     ->default(null),
                 Forms\Components\Toggle::make('can_be_loaned')
-                    ->label('Kan lånas ut'),
+                    ->label('Can be loaned'),
             ]);
     }
 
@@ -64,28 +65,28 @@ class ItemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('desc')
-                    ->label('Beskrivning')
+                    ->label('Description')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('acquisition_date')
-                    ->label('Inköpsdatum')
+                    ->label('Acquisition date')
                     ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('quantity')
-                    ->label('Antal')
+                    ->label('Quantity')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type.name')
-                    ->label('Typ')
+                    ->label('Type')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('cost')
-                    ->label('Kostnad')
+                    ->label('Price')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Bild'),
+                    ->label('Image'),
                 Tables\Columns\IconColumn::make('can_be_loaned')
-                    ->label('Kan bli utlånad')
+                    ->label('Can be loaned')
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark')
                     ->trueColor('success')
@@ -100,7 +101,7 @@ class ItemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -19,22 +19,22 @@ class ItemsOverview extends BaseWidget
             ->query(
                 Item::where('can_be_loaned', true)
             )
-            ->heading('Items för utlåning')
+            ->heading('Items for lending')
             ->columns([
                 Tables\Columns\TextColumn::make('desc')
-                    ->label('Beskrivning')
+                    ->label('Description')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Bild'),
+                    ->label('Image'),
                 Tables\Columns\IconColumn::make('reserved')
-                    ->label('Tillgänglig')
+                    ->label('Available')
                     ->falseIcon('heroicon-o-check-badge')
                     ->trueIcon('heroicon-o-x-mark')
                     ->falseColor('success')
                     ->trueColor('danger')
                     ->default(false),
                 Tables\Columns\TextColumn::make('reserveditem.return_date')
-                    ->label('Tillbaka')
+                    ->label('Available again')
                     ->searchable(),
             ]);
     }
