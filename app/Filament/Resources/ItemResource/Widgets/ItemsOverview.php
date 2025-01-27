@@ -26,13 +26,13 @@ class ItemsOverview extends BaseWidget
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Bild'),
-                Tables\Columns\IconColumn::make('reserveditem.reserved')
+                Tables\Columns\IconColumn::make('reserved')
                     ->label('Tillgänglig')
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-mark')
-                    ->trueColor('success')
-                    ->falseColor('danger')
-                    ->default(true),
+                    ->falseIcon('heroicon-o-check-badge')
+                    ->trueIcon('heroicon-o-x-mark')
+                    ->falseColor('success')
+                    ->trueColor('danger')
+                    ->default(false),
                 Tables\Columns\TextColumn::make('reserveditem.return_date')
                     ->label('Tillbaka')
                     ->searchable(),

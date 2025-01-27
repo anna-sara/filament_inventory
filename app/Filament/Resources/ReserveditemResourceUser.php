@@ -102,4 +102,9 @@ class ReserveditemResourceUser extends Resource
         ItemResource\Widgets\ItemsOverview::class,
     ];
 }
+
+public static function canViewAny(): bool
+{
+                return auth()->user()->is_admin==false;
+                    }
 }

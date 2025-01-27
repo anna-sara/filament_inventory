@@ -22,9 +22,7 @@ class EditReserveditem extends EditRecord
 
      protected function mutateFormDataBeforeSave(array $data): array
     {
-       $data['user_id'] = auth()->id();
-       $data['username'] = auth()->user()->name;
-
+       
        if ($data['delivered'])
         {
             $data['delivered_date'] = Carbon::now();
