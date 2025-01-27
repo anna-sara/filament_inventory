@@ -32,9 +32,10 @@ class ItemResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image')
                 ->label('Image')
-                ->minSize(512)
+                ->minSize(25)
                 ->maxSize(5500)
                 ->columnSpan('full')
+                ->disk('public')
                 ->image(),
                 Forms\Components\TextInput::make('desc')
                     ->label('Description')
