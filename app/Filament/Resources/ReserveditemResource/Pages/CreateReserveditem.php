@@ -14,6 +14,7 @@ class CreateReserveditem extends CreateRecord
 {
     protected static string $resource = ReserveditemResource::class;
 
+    protected static ?string $title = 'Reserve an item';
 
    protected function handleRecordCreation(array $data): Model
    {

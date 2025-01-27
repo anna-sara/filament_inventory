@@ -22,9 +22,9 @@ class ReserveditemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-x-mark';
 
-    protected static ?string $modelLabel = 'Reserverade items';
+    protected static ?string $modelLabel = 'Reserved items';
 
-    protected static ?string $title = 'Reserverade item';
+    protected static ?string $title = 'Reserve an item';
 
     public static function form(Form $form): Form
     {
