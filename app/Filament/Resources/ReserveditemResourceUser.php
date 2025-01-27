@@ -20,9 +20,7 @@ class ReserveditemResourceUser extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-x-mark';
 
-    protected static ?string $modelLabel = 'Reserve an item';
-
-    protected static ?string $title = 'Reserve an item';
+    protected static ?string $modelLabel = 'Reserve items';
 
     protected static ?string $slug = 'user';
 
