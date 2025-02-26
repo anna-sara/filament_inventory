@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->integer('user_id')->nullable();
             $table->string('username')->nullable();
+            $table->string('email')->nullable();
             $table->timestamp('reserved_date')->nullable();
             $table->timestamp('delivered_date')->nullable();
             $table->timestamp('return_date')->nullable();

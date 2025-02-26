@@ -16,7 +16,7 @@ class EditReserveditem extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            //Actions\DeleteAction::make(),
         ];
     }
 
@@ -51,4 +51,9 @@ class EditReserveditem extends EditRecord
    {
        return $this->getResource()::getUrl('index');
    }
+
+   public function getHeading(): string
+    {
+        return 'Edit: ' . Item::where('id', $this->getRecord()->item_id)->pluck('desc')->first();
+    }
 }

@@ -9,11 +9,14 @@ use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Resources\Get;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Radio;
+use Filament\Support\Enums\IconPosition;
 
 
 class ReserveditemResource extends Resource
@@ -22,7 +25,7 @@ class ReserveditemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-x-mark';
 
-    protected static ?string $modelLabel = 'Reserved items';
+    protected static ?string $modelLabel = 'Reservations';
 
     protected static ?string $title = 'Reserve an item';
 
@@ -30,21 +33,12 @@ class ReserveditemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('item_id')
-                ->label('Choose item to reserve')
-                   ->relationship(
-                       name: 'item', 
-                       titleAttribute: 'desc',
-                        modifyQueryUsing: fn ($query) =>  $query->where('can_be_loaned', true)->where('reserved', false)
-                   )
-                   ->required()
-                   ->disabledOn('edit') 
-                   ->hiddenOn('edit'),
-                //Forms\Components\TextInput::make('user_id')
-                //    ->label('Användare')
-                //    ->default(auth()->id())
-                //    ->disabledOn(['edit', 'create']) 
-                //    ->hiddenOn('edit'),
+                Forms\Components\TextInput::make('username')
+                   ->label('Name')
+                   ->default(null),
+                Forms\Components\TextInput::make('email')
+                   ->label('Email')
+                   ->default(null),
                 Section::make('')
                 ->schema([
                     Forms\Components\Toggle::make('delivered'),
@@ -65,6 +59,9 @@ class ReserveditemResource extends Resource
                 Tables\Columns\TextColumn::make('username')
                     ->label('User')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('reserved_date')
                     ->label('Reservation date')
                     ->sortable(),
@@ -82,12 +79,15 @@ class ReserveditemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->button()
+                ->icon('heroicon-m-pencil-square')
+                ->iconPosition(IconPosition::After),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+            //    Tables\Actions\BulkActionGroup::make([
+            //        Tables\Actions\DeleteBulkAction::make(),
+            //    ]),
             ]);
     }
 
@@ -107,12 +107,13 @@ class ReserveditemResource extends Resource
         ];
     }
 
-    public static function getWidgets(): array
-{
-    return [
-        ItemResource\Widgets\ItemsOverview::class,
-    ];
-}
+
+
+public static function canCreate(): bool
+    {
+        return false;
+    }
+
 
 public static function canViewAny(): bool
     {

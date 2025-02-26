@@ -18,9 +18,12 @@ class CreateReserveditem extends CreateRecord
 
    protected function handleRecordCreation(array $data): Model
    {
-        $data['user_id'] = auth()->id();
-       $data['username'] = auth()->user()->name;
-       $data['reserved_date'] = Carbon::now();
+        if(!$data['username']) {
+            $data['user_id'] = auth()->id();
+            $data['username'] = auth()->user()->name;
+            $data['email'] = auth()->user()->email;
+        }
+        $data['reserved_date'] = Carbon::now();
 
        if ($data['delivered'])
         {
@@ -49,10 +52,5 @@ class CreateReserveditem extends CreateRecord
        return $this->getResource()::getUrl('index');
    }
 
-   protected function getFooterWidgets(): array
-    {
-        return [
-            ItemResource\Widgets\ItemsOverview::class,
-        ];
-    }
+   
 }

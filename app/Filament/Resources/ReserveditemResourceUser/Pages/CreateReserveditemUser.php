@@ -42,10 +42,5 @@ class CreateReserveditemUser extends CreateRecord
        Item::where('id', $record->item_id)->update(['reserved' => true]);
    }
 
-   protected function getFooterWidgets(): array
-    {
-        return [
-            ItemResource\Widgets\ItemsOverview::class,
-        ];
-    }
+  
 }

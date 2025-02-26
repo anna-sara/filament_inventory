@@ -21,7 +21,8 @@ class Reserveditem extends Model
         'delivered',
         'returned',
         'user_id',
-        'item_id'
+        'item_id',
+        'email'
     ];
 
 

@@ -94,12 +94,7 @@ class ReserveditemResourceUser extends Resource
         ];
     }
 
-    public static function getWidgets(): array
-{
-    return [
-        ItemResource\Widgets\ItemsOverview::class,
-    ];
-}
+
 
 public static function canViewAny(): bool
 {
