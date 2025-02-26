@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ItemResource\Pages;
 use App\Filament\Resources\ItemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class CreateItem extends CreateRecord
 {
@@ -13,5 +14,17 @@ class CreateItem extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+         
+        if ($data['type'] == "game")
+         {
+             $data['can_be_loaned'] = true;
+         }
+ 
+         
+        return static::getModel()::create($data);
     }
 }

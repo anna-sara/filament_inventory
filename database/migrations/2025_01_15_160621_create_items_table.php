@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('desc')->nullable();
             $table->date('acquisition_date')->nullable();
             $table->string('image')->nullable();
-            $table->integer('type_id')->nullable();
+            $table->integer('category_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('cost')->nullable();
             $table->boolean('can_be_loaned')->default(false);

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Models\User;
-use App\Models\Type;
+use App\Models\Category;
 use App\Models\Reserveditem;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -19,16 +19,20 @@ class Item extends Model
         'quantity',
         'cost',
         'can_be_loaned',
-        'type_id'
+        'category_id',
+        'players',
+        'play_time',
+        'age',
+        'type'
     ];
 
 
     /**
      * Get the type of the item
      */
-    public function type(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function reserveditem()

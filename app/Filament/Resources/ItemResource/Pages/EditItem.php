@@ -17,10 +17,13 @@ class EditItem extends EditRecord
         ];
     }
 
-
-
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    public function getHeading(): string
+    {
+        return 'Edit: ' . $this->getRecord()->desc;
     }
 }
