@@ -146,6 +146,11 @@ class ItemResource extends Resource
                 ->label('Available')
                 ->query(fn (Builder $query): Builder => $query->where('reserved', false))
                 ->columnSpanFull()
+                ->toggle(),
+                Filter::make('can_be_loaned')
+                ->label('Can be loaned')
+                ->query(fn (Builder $query): Builder => $query->where('can_be_loaned', true))
+                ->columnSpanFull()
                 ->toggle()
             ],layout: FiltersLayout::AboveContent)
             ->actions([
