@@ -29,7 +29,7 @@ class Delivered extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Delivered',
+            subject: 'Levererad',
         );
     }
 
@@ -44,7 +44,7 @@ class Delivered extends Mailable
                 'reservationName' => $this->reservation->username,
                 'reservationDesc' => Item::where('id', $this->reservation->item_id)->pluck('desc')->first(),
                 'reservationEmail' => $this->reservation->email,
-                'reservationReturnDate' => $this->reservation->return_date,
+                'reservationReturnDate' => $this->reservation->return_date->toDateString(),
             ],
         );
     }
