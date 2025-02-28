@@ -30,6 +30,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Infolists\Components\ImageEntry;
 
 class Reserve extends BasePage implements HasTable
 {
@@ -86,6 +87,7 @@ class Reserve extends BasePage implements HasTable
                 ->infolist([
                     Section::make('Game')
                     ->schema([
+                        ImageEntry::make('image'),
                         TextEntry::make('desc'),
                         TextEntry::make('acquisition_date'),
                         TextEntry::make('category.name'),

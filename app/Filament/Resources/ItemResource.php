@@ -25,7 +25,11 @@ use Filament\Forms\Components\TextInput;
 use Carbon\Carbon;
 use Filament\Support\Enums\IconPosition;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationCreatedUser;
+use App\Mail\ReservationCreated;
 
 
 class ItemResource extends Resource
@@ -159,6 +163,7 @@ class ItemResource extends Resource
                 ->infolist([
                     Section::make('Game')
                     ->schema([
+                        ImageEntry::make('image'),
                         TextEntry::make('desc'),
                         TextEntry::make('acquisition_date'),
                         TextEntry::make('category.name'),
@@ -171,6 +176,7 @@ class ItemResource extends Resource
                     ->hidden(fn ($record) => $record->type === "item"),
                     Section::make('Item')
                     ->schema([
+                        ImageEntry::make('image'),
                         TextEntry::make('desc'),
                         TextEntry::make('acquisition_date'),
                         TextEntry::make('category.name'),
@@ -198,13 +204,17 @@ class ItemResource extends Resource
                         ->required(),
                 ])
                 ->action(function (array $data, Item $record): void {
-                    Reserveditem::create([
+                    $reservation = Reserveditem::create([
                         'item_id' => $record->id,
                         'reserved_date' => Carbon::now(),
                         'username' => $data['username'],
                         'email' => $data['email']
                     ]);
                     Item::where('id', $record->id)->update(['reserved' => true]);
+                    Mail::to($data['email'])
+                    ->send(new ReservationCreatedUser($reservation));
+                    Mail::to(env('MAIL_FROM_ADDRESS'))
+                    ->send(new ReservationCreated($reservation));
                 })
                 ->hidden(fn ($record) => $record->reserved)
             ])

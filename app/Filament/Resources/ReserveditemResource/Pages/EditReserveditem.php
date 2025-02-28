@@ -8,6 +8,8 @@ use Filament\Resources\Pages\EditRecord;
 use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\Reserveditem;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Delivered;
 
 class EditReserveditem extends EditRecord
 {
@@ -44,6 +46,14 @@ class EditReserveditem extends EditRecord
             Item::where('id', $record->item_id)->update(['reserved' => false]);
             Reserveditem::where('id', $record->id)->delete();
         }
+
+        if ($record->delivered && !$record->returned)
+        {
+            Mail::to($record->email)
+            ->send(new Delivered($record));
+        }
+
+       
         
     }
 
