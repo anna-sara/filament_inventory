@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reservation Skapad</title>
+    <title>Reservation skapad</title>
 </head>
 <body>
-    <h1>Reservation Skapad</h1>
+    <h1>Reservation skapad</h1>
     <p>Du har reserverat {{ $reservationDesc }}</p>
-    <p>Admin kommer att ta kontakt med dig för att bestämma tid för överlämning av spel.</p>
+    <p>Ansvarig på vBytes kommer att ta kontakt med dig för att bestämma tid för överlämning.</p>
+    <p>Med vänliga hälsningar</p>
+    <p>vBytes</p>
 </body>
 </html>
