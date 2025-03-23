@@ -16,7 +16,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Support\Enums\IconPosition;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Actions\Action;
 
 
 class ReserveditemResource extends Resource
@@ -33,16 +39,16 @@ class ReserveditemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('username')
+                TextInput::make('username')
                    ->label('Name')
                    ->default(null),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                    ->label('Email')
                    ->default(null),
                 Section::make('')
                 ->schema([
-                    Forms\Components\Toggle::make('delivered'),
-                    Forms\Components\Toggle::make('returned')
+                    Toggle::make('delivered'),
+                    Toggle::make('returned')
                 ])
                 
             ]);
@@ -53,25 +59,25 @@ class ReserveditemResource extends Resource
         return $table
             //->query(Reserveditem::withTrashed())
             ->columns([
-                Tables\Columns\TextColumn::make('item.desc')
+                TextColumn::make('item.desc')
                     ->label('Name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('username')
+                TextColumn::make('username')
                     ->label('User')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->label('Email')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('reserved_date')
+                TextColumn::make('reserved_date')
                     ->label('Reservation date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('delivered_date')
+                TextColumn::make('delivered_date')
                     ->label('Delivery date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('return_date')
+                TextColumn::make('return_date')
                     ->label('Return date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('returned_date')
+                TextColumn::make('returned_date')
                     ->label('Returned')
                     ->sortable(),
             ])

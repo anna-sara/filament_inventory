@@ -31,6 +31,10 @@ use Filament\Infolists\Components\Section;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Actions\Action;
 
 class Reserve extends BasePage implements HasTable
 {
@@ -46,22 +50,22 @@ class Reserve extends BasePage implements HasTable
         return $table
             ->query( Item::where('can_be_loaned', true)->where('type', "game"))
             ->columns([
-                Tables\Columns\TextColumn::make('desc')
+                TextColumn::make('desc')
                     ->label('Description')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image')
+                ImageColumn::make('image')
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('players')
+                TextColumn::make('players')
                     ->label('Players')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('play_time')
+                TextColumn::make('play_time')
                     ->label('Play Time')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('age')
+                TextColumn::make('age')
                     ->label('Age')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('reserved')
+                IconColumn::make('reserved')
                     ->label('Available')
                     ->falseIcon('heroicon-o-check-badge')
                     ->trueIcon('heroicon-o-x-mark')
@@ -82,12 +86,14 @@ class Reserve extends BasePage implements HasTable
                 ->toggle()
             ],layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\Action::make('More info')
+                Action::make('More info')
                 ->modalSubmitAction(false)   
                 ->infolist([
                     Section::make('Game')
                     ->schema([
-                        ImageEntry::make('image'),
+                        ImageEntry::make('image')
+                        ->width(300)
+                        ->height('auto'),
                         TextEntry::make('desc'),
                         TextEntry::make('acquisition_date'),
                         TextEntry::make('category.name'),
@@ -96,16 +102,16 @@ class Reserve extends BasePage implements HasTable
                         TextEntry::make('age'),
                     ])
                     ->columns(),
-                    ]),
-                Tables\Actions\Action::make('reserve')
+                ]),
+                Action::make('reserve')
                 ->label('Reserve')
                 ->button()
                 ->color('success')
                 ->form([
-                    Forms\Components\TextInput::make('username')
+                    TextInput::make('username')
                         ->label('Name')
                         ->required(),
-                    Forms\Components\TextInput::make('email')
+                    TextInput::make('email')
                         ->label('Email')
                         ->required(),
                 ])

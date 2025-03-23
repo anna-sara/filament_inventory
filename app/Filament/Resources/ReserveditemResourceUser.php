@@ -13,6 +13,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Support\Enums\IconPosition;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Actions\Action;
 
 class ReserveditemResourceUser extends Resource
 {
@@ -28,7 +37,7 @@ class ReserveditemResourceUser extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('item_id')
+                Select::make('item_id')
                 ->label('Choose an item to reserve')
                    ->relationship(
                        name: 'item', 
@@ -49,22 +58,22 @@ class ReserveditemResourceUser extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('items.desc')
+                TextColumn::make('items.desc')
                     ->label('Name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('username')
+                TextColumn::make('username')
                     ->label('User')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('reserved_date')
+                TextColumn::make('reserved_date')
                     ->label('Reserved date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('delivered_date')
+                TextColumn::make('delivered_date')
                     ->label('Delivery date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('return_date')
+                TextColumn::make('return_date')
                     ->label('Return date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('returned_date')
+                TextColumn::make('returned_date')
                     ->label('Returned')
                     ->sortable(),
             ])

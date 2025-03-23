@@ -30,6 +30,13 @@ use Filament\Infolists\Components\Section;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationCreatedUser;
 use App\Mail\ReservationCreated;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Actions\Action;
 
 
 class ItemResource extends Resource
@@ -40,61 +47,59 @@ class ItemResource extends Resource
 
     protected static ?string $modelLabel = 'Inventory';
 
-    
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Radio::make('type')
-                ->options([
-                    'game' => 'Game',
-                    'item' => 'Item',
-                ])
-                ->default('game')
-                ->live(),
-                Forms\Components\FileUpload::make('image')
-                ->label('Image')
-                ->minSize(25)
-                ->maxSize(5500)
-                ->columnSpan('full')
-                ->disk('public')
-                ->image(),
-                Forms\Components\TextInput::make('desc')
+                    ->options([
+                        'game' => 'Game',
+                        'item' => 'Item',
+                    ])
+                    ->default('game')
+                    ->live(),
+                FileUpload::make('image')
+                    ->label('Image')
+                    ->minSize(25)
+                    ->maxSize(5500)
+                    ->columnSpan('full')
+                    ->disk('public')
+                    ->image(),
+                TextInput::make('desc')
                     ->label('Description')
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\DatePicker::make('acquisition_date')
+                DatePicker::make('acquisition_date')
                     ->label('Acquisition date'),
-                Forms\Components\TextInput::make('quantity')
+                TextInput::make('quantity')
                     ->label('Quantity')
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(1000)
                     ->default(0)
                     ->hidden(fn ($get): string => $get('type') == 'game'),
-                Forms\Components\Select::make('category_id')
+                Select::make('category_id')
                     ->label('Category')
                     ->options(Category::all()->pluck('name', 'id')),
-                Forms\Components\TextInput::make('cost')
+                TextInput::make('cost')
                     ->label('Price')
                     ->default(null),
-                Forms\Components\TextInput::make('age')
+                TextInput::make('age')
                     ->label('Age')
                     ->maxLength(255)
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
-                Forms\Components\TextInput::make('players')
+                TextInput::make('players')
                     ->label('Players')
                     ->maxLength(255)
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
-                Forms\Components\TextInput::make('play_time')
+                TextInput::make('play_time')
                     ->label('Play time')
                     ->maxLength(255)
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
-                Forms\Components\Toggle::make('can_be_loaned')
+                Toggle::make('can_be_loaned')
                     ->label('Can be loaned')
                     ->hidden(fn ($get): string => $get('type') == 'game'),
             ]);
@@ -104,24 +109,24 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('desc')
+                TextColumn::make('desc')
                     ->label('Description')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->label('Type')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image')
+                ImageColumn::make('image')
                     ->label('Image'),
-                Tables\Columns\IconColumn::make('can_be_loaned')
+                IconColumn::make('can_be_loaned')
                     ->label('Can be loaned')
                     ->sortable()
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark')
                     ->trueColor('success')
                     ->falseColor('danger'),
-                Tables\Columns\IconColumn::make('reserved')
+                IconColumn::make('reserved')
                     ->label('Available')
                     ->falseIcon('heroicon-o-check-badge')
                     ->trueIcon('heroicon-o-x-mark')
@@ -158,12 +163,14 @@ class ItemResource extends Resource
                 ->toggle()
             ],layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\Action::make('More info')
+                Action::make('More info')
                 ->modalSubmitAction(false)   
                 ->infolist([
                     Section::make('Game')
                     ->schema([
-                        ImageEntry::make('image'),
+                        ImageEntry::make('image') 
+                        ->width(300)
+                        ->height('auto'),
                         TextEntry::make('desc'),
                         TextEntry::make('acquisition_date'),
                         TextEntry::make('category.name'),
@@ -196,10 +203,10 @@ class ItemResource extends Resource
                 ->button()
                 ->color('success')
                 ->form([
-                    Forms\Components\TextInput::make('username')
+                    TextInput::make('username')
                         ->label('Name')
                         ->required(),
-                    Forms\Components\TextInput::make('email')
+                    TextInput::make('email')
                         ->label('Email')
                         ->required(),
                 ])
@@ -219,7 +226,7 @@ class ItemResource extends Resource
                 ->hidden(fn ($record) => $record->reserved)
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
