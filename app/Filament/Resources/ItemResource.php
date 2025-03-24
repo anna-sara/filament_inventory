@@ -254,7 +254,7 @@ class ItemResource extends Resource
                 ->label('Reserve')
                 ->translateLabel()
                 ->button()
-                ->color('success')
+                ->color('primary')
                 ->form([
                     TextInput::make('username')
                         ->label('Name')

@@ -119,7 +119,7 @@ class Reserve extends BasePage implements HasTable
                 Action::make('reserve')
                 ->label('Reservera')
                 ->button()
-                ->color('success')
+                ->color('primary')
                 ->form([
                     TextInput::make('username')
                         ->label('Namn')

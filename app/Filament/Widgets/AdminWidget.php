@@ -16,9 +16,10 @@ class AdminWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Card::make('Total number of users', User::count() ),
-            Card::make('Total number of items', Item::count() ),
-            Card::make('Reserved items', Reserveditem::count() ),
+            //Card::make(__('Total number of users'), User::count() ),
+            Card::make(__('Total number of games'), Item::where('type', 'game')->count() ),
+            Card::make(__('Total number of items'), Item::where('type', 'item')->count() ),
+            Card::make(__('Reserved games and items'), Reserveditem::count() ),
         ];
     }
 
