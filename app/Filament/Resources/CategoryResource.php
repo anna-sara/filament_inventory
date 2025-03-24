@@ -23,23 +23,36 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark';
 
-    protected static ?string $modelLabel = 'Categories';
+    public static function getNavigationLabel(): string
+    {
+        return __('Categories');
+    }
 
-    protected static ?string $title = 'Categories';
+    public static function getPluralLabel(): string
+    {
+        return __('Categories');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('Category');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(255),
                 Select::make('type')
-                ->required()
-                ->options([
-                    'game' => 'Game',
-                    'item' => 'Item',
-                ]),
+                    ->translateLabel()
+                    ->required()
+                    ->options([
+                        'game' => 'Game',
+                        'item' => 'Item',
+                    ]),
             ]);
     }
 
@@ -49,9 +62,11 @@ class CategoryResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Name')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('type')
                     ->label('Type')
+                    ->translateLabel()
                     ->searchable(),
             ])
             ->filters([

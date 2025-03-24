@@ -45,34 +45,53 @@ class ItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
-    protected static ?string $modelLabel = 'Inventory';
+    public static function getNavigationLabel(): string
+    {
+        return __('Inventory');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Inventory');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('Inventory');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Radio::make('type')
+                    ->translateLabel()
                     ->options([
-                        'game' => 'Game',
-                        'item' => 'Item',
+                        'game' => __('Game'),
+                        'item' => __('Item'),
                     ])
                     ->default('game')
                     ->live(),
                 FileUpload::make('image')
                     ->label('Image')
+                    ->translateLabel()
                     ->minSize(25)
                     ->maxSize(5500)
                     ->columnSpan('full')
-                    ->disk('public')
+                    ->disk('local')
+                    ->visibility('private')
                     ->image(),
                 TextInput::make('desc')
                     ->label('Description')
+                    ->translateLabel()
                     ->maxLength(255)
                     ->default(null),
                 DatePicker::make('acquisition_date')
-                    ->label('Acquisition date'),
+                    ->label('Acquisition date')
+                    ->translateLabel(),
                 TextInput::make('quantity')
                     ->label('Quantity')
+                    ->translateLabel()
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(1000)
@@ -80,27 +99,33 @@ class ItemResource extends Resource
                     ->hidden(fn ($get): string => $get('type') == 'game'),
                 Select::make('category_id')
                     ->label('Category')
+                    ->translateLabel()
                     ->options(Category::all()->pluck('name', 'id')),
                 TextInput::make('cost')
                     ->label('Price')
+                    ->translateLabel()
                     ->default(null),
                 TextInput::make('age')
                     ->label('Age')
+                    ->translateLabel()
                     ->maxLength(255)
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
                 TextInput::make('players')
                     ->label('Players')
+                    ->translateLabel()
                     ->maxLength(255)
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
                 TextInput::make('play_time')
                     ->label('Play time')
+                    ->translateLabel()
                     ->maxLength(255)
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
                 Toggle::make('can_be_loaned')
                     ->label('Can be loaned')
+                    ->translateLabel()
                     ->hidden(fn ($get): string => $get('type') == 'game'),
             ]);
     }
@@ -111,16 +136,22 @@ class ItemResource extends Resource
             ->columns([
                 TextColumn::make('desc')
                     ->label('Description')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('type')
-                    ->label('Type')
-                    ->searchable()
-                    ->sortable(),
+                //TextColumn::make('type')
+                //    ->label('Type')
+                //    ->translateLabel()
+                //    ->searchable()
+                //    ->sortable(),
                 ImageColumn::make('image')
-                    ->label('Image'),
+                    ->label('Image')
+                    ->translateLabel()
+                    ->disk('local')
+                    ->visibility('private'),
                 IconColumn::make('can_be_loaned')
                     ->label('Can be loaned')
+                    ->translateLabel()
                     ->sortable()
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark')
@@ -128,6 +159,7 @@ class ItemResource extends Resource
                     ->falseColor('danger'),
                 IconColumn::make('reserved')
                     ->label('Available')
+                    ->translateLabel()
                     ->falseIcon('heroicon-o-check-badge')
                     ->trueIcon('heroicon-o-x-mark')
                     ->falseColor('success')
@@ -136,59 +168,79 @@ class ItemResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('type')
+                ->translateLabel()
                 ->multiple()
                 ->options([
-                    'game' => 'Game',
-                    'item' => 'Item',
+                    'game' => __('Game'),
+                    'item' => __('Item'),
                 ]),
                 SelectFilter::make('category_id')
-                ->label('Item Category')
-                ->multiple()
-                ->options(Category::all()->where('type', 'item')->pluck('name', 'id')),
-                SelectFilter::make('category_id')
                 ->label('Category')
+                ->translateLabel()
                 ->multiple()
                 ->options(
                     Category::all()->pluck('name', 'id'),
                 ),
                 Filter::make('reserved')
                 ->label('Available')
+                ->translateLabel()
                 ->query(fn (Builder $query): Builder => $query->where('reserved', false))
                 ->columnSpanFull()
                 ->toggle(),
                 Filter::make('can_be_loaned')
                 ->label('Can be loaned')
+                ->translateLabel()
                 ->query(fn (Builder $query): Builder => $query->where('can_be_loaned', true))
                 ->columnSpanFull()
                 ->toggle()
             ],layout: FiltersLayout::AboveContent)
             ->actions([
                 Action::make('More info')
+                ->translateLabel()
                 ->modalSubmitAction(false)   
                 ->infolist([
-                    Section::make('Game')
+                    Section::make('')
                     ->schema([
                         ImageEntry::make('image') 
+                        ->translateLabel()
                         ->width(300)
-                        ->height('auto'),
-                        TextEntry::make('desc'),
-                        TextEntry::make('acquisition_date'),
-                        TextEntry::make('category.name'),
-                        TextEntry::make('players'),
-                        TextEntry::make('play_time'),
-                        TextEntry::make('age'),
-                        TextEntry::make('cost'),
+                        ->height('auto')
+                        ->disk('local')
+                        ->visibility('private'),
+                        TextEntry::make('desc')
+                        ->label('Description')
+                        ->translateLabel(),
+                        TextEntry::make('acquisition_date')
+                        ->translateLabel(),
+                        TextEntry::make('category.name')
+                        ->translateLabel(),
+                        TextEntry::make('players')
+                        ->translateLabel(),
+                        TextEntry::make('play_time')
+                        ->translateLabel(),
+                        TextEntry::make('age')
+                        ->translateLabel(),
+                        TextEntry::make('cost')
+                        ->translateLabel(),
                     ])
                     ->columns()
                     ->hidden(fn ($record) => $record->type === "item"),
-                    Section::make('Item')
+                    Section::make('')
+                    ->translateLabel()
                     ->schema([
-                        ImageEntry::make('image'),
-                        TextEntry::make('desc'),
-                        TextEntry::make('acquisition_date'),
-                        TextEntry::make('category.name'),
-                        TextEntry::make('quantity'),
-                        TextEntry::make('cost'),
+                        ImageEntry::make('image')
+                        ->translateLabel(),
+                        TextEntry::make('desc')
+                        ->label('Description')
+                        ->translateLabel(),
+                        TextEntry::make('acquisition_date')
+                        ->translateLabel(),
+                        TextEntry::make('category.name')
+                        ->translateLabel(),
+                        TextEntry::make('quantity')
+                        ->translateLabel(),
+                        TextEntry::make('cost')
+                        ->translateLabel(),
                     ])
                     ->columns()
                     ->hidden(fn ($record) => $record->type === "game"),
@@ -200,14 +252,17 @@ class ItemResource extends Resource
                 ->iconPosition(IconPosition::After),
                 Tables\Actions\Action::make('reserve')
                 ->label('Reserve')
+                ->translateLabel()
                 ->button()
                 ->color('success')
                 ->form([
                     TextInput::make('username')
                         ->label('Name')
+                        ->translateLabel()
                         ->required(),
                     TextInput::make('email')
                         ->label('Email')
+                        ->translateLabel()
                         ->required(),
                 ])
                 ->action(function (array $data, Item $record): void {

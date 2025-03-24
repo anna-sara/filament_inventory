@@ -64,6 +64,6 @@ class EditReserveditem extends EditRecord
 
    public function getHeading(): string
     {
-        return 'Edit: ' . Item::where('id', $this->getRecord()->item_id)->pluck('desc')->first();
+        return Item::where('id', $this->getRecord()->item_id)->pluck('desc')->first();
     }
 }

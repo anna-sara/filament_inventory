@@ -24,6 +24,6 @@ class EditItem extends EditRecord
 
     public function getHeading(): string
     {
-        return 'Edit: ' . $this->getRecord()->desc;
+        return  $this->getRecord()->desc;
     }
 }

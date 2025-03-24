@@ -31,9 +31,20 @@ class ReserveditemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-x-mark';
 
-    protected static ?string $modelLabel = 'Reservations';
+    public static function getNavigationLabel(): string
+    {
+        return __('Reservations');
+    }
 
-    protected static ?string $title = 'Reserve an item';
+    public static function getPluralLabel(): string
+    {
+        return __('Reservations');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('Reservation');
+    }
 
     public static function form(Form $form): Form
     {
@@ -41,14 +52,17 @@ class ReserveditemResource extends Resource
             ->schema([
                 TextInput::make('username')
                    ->label('Name')
+                   ->translateLabel()
                    ->default(null),
                 TextInput::make('email')
                    ->label('Email')
                    ->default(null),
                 Section::make('')
                 ->schema([
-                    Toggle::make('delivered'),
+                    Toggle::make('delivered')
+                    ->translateLabel(),
                     Toggle::make('returned')
+                    ->translateLabel()
                 ])
                 
             ]);
@@ -61,24 +75,30 @@ class ReserveditemResource extends Resource
             ->columns([
                 TextColumn::make('item.desc')
                     ->label('Name')
+                    ->translateLabel()
                     ->sortable(),
                 TextColumn::make('username')
                     ->label('User')
+                    ->translateLabel()
                     ->sortable(),
                 TextColumn::make('email')
                     ->label('Email')
                     ->sortable(),
                 TextColumn::make('reserved_date')
                     ->label('Reservation date')
+                    ->translateLabel()
                     ->sortable(),
                 TextColumn::make('delivered_date')
                     ->label('Delivery date')
+                    ->translateLabel()
                     ->sortable(),
                 TextColumn::make('return_date')
                     ->label('Return date')
+                    ->translateLabel()
                     ->sortable(),
                 TextColumn::make('returned_date')
                     ->label('Returned')
+                    ->translateLabel()
                     ->sortable(),
             ])
             ->filters([

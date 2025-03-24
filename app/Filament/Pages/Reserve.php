@@ -35,6 +35,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\Action;
+use Filament\Support\Colors\Color;
 
 class Reserve extends BasePage implements HasTable
 {
@@ -51,22 +52,24 @@ class Reserve extends BasePage implements HasTable
             ->query( Item::where('can_be_loaned', true)->where('type', "game"))
             ->columns([
                 TextColumn::make('desc')
-                    ->label('Description')
+                    ->label('Beskrivning')
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('image')
-                    ->label('Image'),
+                    ->label('Bild')
+                    ->disk('local')
+                    ->visibility('private'),
                 TextColumn::make('players')
-                    ->label('Players')
+                    ->label('Antal spelare')
                     ->sortable(),
                 TextColumn::make('play_time')
-                    ->label('Play Time')
+                    ->label('Speltid')
                     ->sortable(),
                 TextColumn::make('age')
-                    ->label('Age')
+                    ->label('Ålder')
                     ->sortable(),
                 IconColumn::make('reserved')
-                    ->label('Available')
+                    ->label('Tillgängligt')
                     ->falseIcon('heroicon-o-check-badge')
                     ->trueIcon('heroicon-o-x-mark')
                     ->falseColor('success')
@@ -76,40 +79,50 @@ class Reserve extends BasePage implements HasTable
             ])
             ->filters([
                 SelectFilter::make('category_id')
-                ->label('Category')
                 ->multiple()
+                ->preload()
+                ->label('Kategori')
                 ->options(Category::all()->where('type', 'game')->pluck('name', 'id')),
                 Filter::make('reserved')
-                ->label('Available')
+                ->label('Tillgänglig')
                 ->query(fn (Builder $query): Builder => $query->where('reserved', false))
                 ->columnSpanFull()
                 ->toggle()
             ],layout: FiltersLayout::AboveContent)
             ->actions([
-                Action::make('More info')
+                Action::make('Mer info')
                 ->modalSubmitAction(false)   
                 ->infolist([
-                    Section::make('Game')
+                    Section::make('Spel')
                     ->schema([
                         ImageEntry::make('image')
+                        ->label('Bild')
                         ->width(300)
-                        ->height('auto'),
-                        TextEntry::make('desc'),
-                        TextEntry::make('acquisition_date'),
-                        TextEntry::make('category.name'),
-                        TextEntry::make('players'),
-                        TextEntry::make('play_time'),
-                        TextEntry::make('age'),
+                        ->height('auto')
+                        ->disk('local')
+                        ->visibility('private'),
+                        TextEntry::make('desc')
+                        ->label('Beskrivning'),
+                        TextEntry::make('acquisition_date')
+                        ->label('Inköpsdatum'),
+                        TextEntry::make('category.name')
+                        ->label('Kategori'),
+                        TextEntry::make('players')
+                        ->label('Antal spelare'),
+                        TextEntry::make('play_time')
+                        ->label('Speltid'),
+                        TextEntry::make('age')
+                        ->label('Ålder'),
                     ])
                     ->columns(),
                 ]),
                 Action::make('reserve')
-                ->label('Reserve')
+                ->label('Reservera')
                 ->button()
                 ->color('success')
                 ->form([
                     TextInput::make('username')
-                        ->label('Name')
+                        ->label('Namn')
                         ->required(),
                     TextInput::make('email')
                         ->label('Email')

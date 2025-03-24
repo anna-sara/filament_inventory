@@ -29,23 +29,42 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Users');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Users');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('User');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(255),
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                DateTimePicker::make('email_verified_at'),
+                DateTimePicker::make('email_verified_at')
+                    ->translateLabel(),
                 TextInput::make('password')
+                    ->translateLabel()
                     ->password()
                     ->required()
                     ->maxLength(255),
                 Toggle::make('is_admin')
+                    ->translateLabel()
                     ->required(),
             ]);
     }
@@ -56,11 +75,13 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Name')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
                 IconColumn::make('is_admin')
-                    ->boolean(),
+                    ->boolean()
+                    ->translateLabel(),
             ])
             ->filters([
                 //
