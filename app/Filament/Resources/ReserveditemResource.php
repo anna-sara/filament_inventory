@@ -23,6 +23,10 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Columns\Layout\Panel;
 
 
 class ReserveditemResource extends Resource
@@ -73,33 +77,46 @@ class ReserveditemResource extends Resource
         return $table
             //->query(Reserveditem::withTrashed())
             ->columns([
-                TextColumn::make('item.desc')
-                    ->label('Name')
-                    ->translateLabel()
-                    ->sortable(),
-                TextColumn::make('username')
-                    ->label('User')
-                    ->translateLabel()
-                    ->sortable(),
-                TextColumn::make('email')
-                    ->label('Email')
-                    ->sortable(),
-                TextColumn::make('reserved_date')
-                    ->label('Reservation date')
-                    ->translateLabel()
-                    ->sortable(),
-                TextColumn::make('delivered_date')
-                    ->label('Delivery date')
-                    ->translateLabel()
-                    ->sortable(),
-                TextColumn::make('return_date')
-                    ->label('Return date')
-                    ->translateLabel()
-                    ->sortable(),
-                TextColumn::make('returned_date')
-                    ->label('Returned')
-                    ->translateLabel()
-                    ->sortable(),
+                Stack::make([
+                    TextColumn::make('item.desc')
+                        ->label('Name')
+                        ->translateLabel()
+                        ->sortable()
+                        ->weight(FontWeight::Bold)
+                        ->size(TextColumn\TextColumnSize::Large),
+                    TextColumn::make('username')
+                        ->label('User')
+                        ->translateLabel()
+                        ->sortable()
+                        ->icon('heroicon-m-user'),
+                    TextColumn::make('email')
+                        ->label('Email')
+                        ->sortable()
+                        ->icon('heroicon-m-envelope'),
+                    TextColumn::make('reserved_date')
+                        ->label('Reservation date')
+                        ->translateLabel()
+                        ->sortable()
+                        ->dateTime('Y-m-d')
+                        ->icon('heroicon-m-hand-raised'),
+                    TextColumn::make('delivered_date')
+                        ->label('Delivery date')
+                        ->translateLabel()
+                        ->sortable()
+                        ->dateTime('Y-m-d')
+                        ->icon('heroicon-m-arrow-up-tray')
+                        ,
+                    TextColumn::make('return_date')
+                        ->label('Return date')
+                        ->translateLabel()
+                        ->sortable()
+                        ->dateTime('Y-m-d')
+                        ->icon('heroicon-m-arrow-down-tray')   
+                ])->extraAttributes(['class' => 'space-y-2']) 
+            ])
+            ->contentGrid([
+                'md' => 2,
+                'xl' => 3,
             ])
             ->filters([
                 //

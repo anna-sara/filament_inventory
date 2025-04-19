@@ -36,6 +36,12 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\Action;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Grid;
+use Filament\Notifications\Notification;
 
 class Reserve extends BasePage implements HasTable
 {
@@ -51,31 +57,54 @@ class Reserve extends BasePage implements HasTable
         return $table
             ->query( Item::where('can_be_loaned', true)->where('type', "game"))
             ->columns([
-                TextColumn::make('desc')
-                    ->label('Beskrivning')
-                    ->sortable()
-                    ->searchable(),
-                ImageColumn::make('image')
-                    ->label('Bild')
-                    ->disk('local')
-                    ->visibility('private'),
-                TextColumn::make('players')
-                    ->label('Antal spelare')
-                    ->sortable(),
-                TextColumn::make('play_time')
-                    ->label('Speltid')
-                    ->sortable(),
-                TextColumn::make('age')
-                    ->label('Ålder')
-                    ->sortable(),
-                IconColumn::make('reserved')
-                    ->label('Tillgängligt')
-                    ->falseIcon('heroicon-o-check-badge')
-                    ->trueIcon('heroicon-o-x-mark')
-                    ->falseColor('success')
-                    ->trueColor('danger')
-                    ->default(false),
+                Grid::make()
+                ->columns(1)
+                ->schema([
+                    Stack::make([
+                        TextColumn::make('reserved')
+                        ->weight(FontWeight::Bold)
+                        ->formatStateUsing(fn (string $state): string => $state ? 'Utlånad' : 'Tillgänglig')
+                        ->color(fn($record) => $record->reserved ? 'danger' : 'success' )
+                        ->badge(),
+                        ImageColumn::make('image')
+                        ->label('Bild')
+                        ->disk('local')
+                        ->size('100%')
+                        ->extraImgAttributes([
+                            'class' => 'rounded-md'
+                        ])
+                        ->visibility('private'),
+                        TextColumn::make('desc')
+                        ->label('Beskrivning')
+                        ->sortable()
+                        ->searchable()
+                        ->weight(FontWeight::Bold)
+                        ->size(TextColumn\TextColumnSize::Large),
+                        Panel::make([
+                            Stack::make([
+                                TextColumn::make('players')
+                                    ->label('Antal spelare')
+                                    ->sortable()
+                                    ->icon('heroicon-m-users'),
+                                TextColumn::make('play_time')
+                                    ->label('Speltid')
+                                    ->sortable()
+                                    ->icon('heroicon-m-clock'),
+                                TextColumn::make('age')
+                                    ->label('Ålder')
+                                    ->sortable()
+                                    ->icon('heroicon-m-arrows-right-left'),
+                            ])->extraAttributes(['class' => 'space-y-3'])                           
+                        ])
+                    ])->extraAttributes(['class' => 'space-y-3'])  
                     
+                ])
+            ])
+            ->defaultSort('desc', 'asc')
+            ->contentGrid([
+                'sm' => 2,
+                'md' => 3,
+                'xl' => 4,
             ])
             ->filters([
                 SelectFilter::make('category_id')
@@ -90,8 +119,38 @@ class Reserve extends BasePage implements HasTable
                 ->toggle()
             ],layout: FiltersLayout::AboveContent)
             ->actions([
+                Action::make('reserve')
+                ->label('Reservera')
+                ->button()
+                ->color('primary')
+                ->form([
+                    TextInput::make('username')
+                        ->label('Namn')
+                        ->required(),
+                    TextInput::make('email')
+                        ->label('Email')
+                        ->required(),
+                ])
+                ->action(function (array $data, Item $record): void {
+                    Reserveditem::create([
+                        'item_id' => $record->id,
+                        'reserved_date' => Carbon::now(),
+                        'username' => $data['username'],
+                        'email' => $data['email']
+                    ]);
+                    Item::where('id', $record->id)->update(['reserved' => true]);
+                    Notification::make()
+                    ->title('Spelet är reserverat!')
+                    ->body('Ett bekräftelsemail har skickats till emailadressen du uppgav. Läs det för mer info om utlämning av spelet.')
+                    ->success()
+                    ->seconds(10)
+                    ->send();
+                })
+                ->hidden(fn ($record) => $record->reserved),
                 Action::make('Mer info')
-                ->modalSubmitAction(false)   
+                ->modalSubmitAction(false)  
+                ->button()
+                ->color('primary') 
                 ->infolist([
                     Section::make('Spel')
                     ->schema([
@@ -115,31 +174,11 @@ class Reserve extends BasePage implements HasTable
                         ->label('Ålder'),
                     ])
                     ->columns(),
-                ]),
-                Action::make('reserve')
-                ->label('Reservera')
-                ->button()
-                ->color('primary')
-                ->form([
-                    TextInput::make('username')
-                        ->label('Namn')
-                        ->required(),
-                    TextInput::make('email')
-                        ->label('Email')
-                        ->required(),
-                ])
-                ->action(function (array $data, Item $record): void {
-                    Reserveditem::create([
-                        'item_id' => $record->id,
-                        'reserved_date' => Carbon::now(),
-                        'username' => $data['username'],
-                        'email' => $data['email']
-                    ]);
-                    Item::where('id', $record->id)->update(['reserved' => true]);
-                })
-                ->hidden(fn ($record) => $record->reserved)
+                ]), 
             ])
             ->bulkActions([
             ]);
+
+            
     }
 }
