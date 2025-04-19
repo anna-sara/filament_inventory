@@ -105,8 +105,9 @@ class ReserveditemResourceUser extends Resource
 
 
 
-public static function canViewAny(): bool
-{
-                return auth()->user()->is_admin==false;
-                    }
+    public static function canViewAny(): bool
+    {
+        return false;
+        //return auth()->user()->is_admin==false;
+    }
 }
