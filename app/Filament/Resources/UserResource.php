@@ -56,8 +56,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                DateTimePicker::make('email_verified_at')
-                    ->translateLabel(),
                 TextInput::make('password')
                     ->translateLabel()
                     ->password()

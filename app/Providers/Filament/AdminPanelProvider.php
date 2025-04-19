@@ -39,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
+            ->passwordReset()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
