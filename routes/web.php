@@ -8,7 +8,7 @@ use App\Filament\Pages\Reserve;
 
 
 //Route::group(['domain' => 'boka.vbytes.se'], function(){
-    Route::get('/', Reserve::class);
+    Route::get('/boka', Reserve::class);
 //});
 
 
