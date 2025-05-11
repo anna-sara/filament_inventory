@@ -148,7 +148,11 @@ class ItemResource extends Resource
                     ->label('Image')
                     ->translateLabel()
                     ->disk('local')
-                    ->visibility('private'),
+                    ->visibility('private')
+                    ->extraImgAttributes([
+                        'class' => 'rounded-md',
+                        'loading' => 'lazy'
+                    ]),
                 IconColumn::make('can_be_loaned')
                     ->label('Can be loaned')
                     ->translateLabel()
