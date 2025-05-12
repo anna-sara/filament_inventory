@@ -3,19 +3,12 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\BasePage;
-use App\Filament\Widgets\StatsOverviewWidget;
 use App\Filament\Resources\ItemResource\Pages;
-use App\Filament\Resources\ItemResource\RelationManagers;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Category;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Radio;
 use Filament\Tables\Enums\FiltersLayout;
@@ -25,7 +18,6 @@ use Filament\Actions\CreateAction;
 use App\Models\Reserveditem;
 use Filament\Forms\Components\TextInput;
 use Carbon\Carbon;
-use Filament\Support\Enums\IconPosition;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Tables\Contracts\HasTable;
@@ -33,15 +25,12 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\Action;
-use Filament\Support\Colors\Color;
-use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Grid;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Builder;
 
 class Reserve extends BasePage implements HasTable
 {
@@ -81,27 +70,34 @@ class Reserve extends BasePage implements HasTable
                         ->searchable()
                         ->weight(FontWeight::Bold)
                         ->size(TextColumn\TextColumnSize::Large),
-                        Panel::make([
-                            Stack::make([
-                                TextColumn::make('players')
-                                    ->label('Antal spelare')
-                                    ->sortable()
-                                    ->icon('heroicon-m-users'),
-                                TextColumn::make('play_time')
-                                    ->label('Speltid')
-                                    ->sortable()
-                                    ->icon('heroicon-m-clock'),
-                                TextColumn::make('age')
-                                    ->label('Ålder')
-                                    ->sortable()
-                                    ->icon('heroicon-m-arrows-right-left'),
-                            ])->extraAttributes(['class' => 'space-y-3'])                           
-                        ])
+                        Stack::make([
+                            TextColumn::make('players')
+                                ->label('Antal spelare')
+                                ->sortable()
+                                ->prefix('Spelare: ')
+                                ->suffix(' st'),
+                            TextColumn::make('play_time')
+                                ->label('Speltid')
+                                ->sortable()
+                                ->prefix('Speltid: ')
+                                ->suffix(' min'),
+                            TextColumn::make('age')
+                                ->label('Ålder')
+                                ->sortable()
+                                ->prefix('Ålder: ')
+                                ->suffix(' år'),
+                        ])->extraAttributes(['class' => 'space-y-3'])                           
                     ])->extraAttributes(['class' => 'space-y-3'])  
                     
                 ])
             ])
-            ->defaultSort('desc', 'asc')
+            //->defaultSort('desc', 'asc')
+            ->defaultSort(function (Builder $query): Builder {
+                return $query
+                    ->orderBy('reserved', 'asc')
+                    ->orderBy('desc', 'asc');
+                   
+            })
             ->contentGrid([
                 'sm' => 2,
                 'md' => 3,
