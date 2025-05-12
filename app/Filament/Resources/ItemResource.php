@@ -154,7 +154,7 @@ class ItemResource extends Resource
                         'loading' => 'lazy'
                     ]),
                 IconColumn::make('can_be_loaned')
-                    ->label('Can be loaned')
+                    ->label('Loanable')
                     ->translateLabel()
                     ->sortable()
                     ->trueIcon('heroicon-o-check-badge')
@@ -163,6 +163,7 @@ class ItemResource extends Resource
                     ->falseColor('danger'),
                 IconColumn::make('reserved')
                     ->label('Available')
+                    ->sortable()
                     ->translateLabel()
                     ->falseIcon('heroicon-o-check-badge')
                     ->trueIcon('heroicon-o-x-mark')
@@ -192,7 +193,7 @@ class ItemResource extends Resource
                 ->columnSpanFull()
                 ->toggle(),
                 Filter::make('can_be_loaned')
-                ->label('Can be loaned')
+                ->label('Loanable')
                 ->translateLabel()
                 ->query(fn (Builder $query): Builder => $query->where('can_be_loaned', true))
                 ->columnSpanFull()
