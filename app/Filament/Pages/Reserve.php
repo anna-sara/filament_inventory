@@ -56,13 +56,13 @@ class Reserve extends BasePage implements HasTable
                         ->color(fn($record) => $record->reserved ? 'danger' : 'success' )
                         ->badge(),
                         ImageColumn::make('image')
+                        ->directory('images')
                         ->label('Bild')
                         ->size('100%')
                         ->extraImgAttributes([
                             'class' => 'rounded-md',
                             'loading' => 'lazy'
-                        ])
-                        ->visibility('private'),
+                        ]),
                         TextColumn::make('desc')
                         ->label('Beskrivning')
                         ->sortable()
