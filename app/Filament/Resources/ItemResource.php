@@ -75,12 +75,10 @@ class ItemResource extends Resource
                 FileUpload::make('image')
                     ->label('Image')
                     ->disk('public')
-                    ->directory('images')
                     ->translateLabel()
                     ->minSize(25)
                     ->maxSize(5500)
                     ->columnSpan('full')
-                    //->visibility('private')
                     ->image(),
                 TextInput::make('desc')
                     ->label('Description')
@@ -148,8 +146,6 @@ class ItemResource extends Resource
                 ImageColumn::make('image')
                     ->label('Image')
                     ->translateLabel()
-                    ->disk('public')
-                    //->visibility('private')
                     ->extraImgAttributes([
                         'class' => 'rounded-md',
                         'loading' => 'lazy'
