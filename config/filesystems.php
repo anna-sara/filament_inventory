@@ -40,6 +40,7 @@ return [
         'public' => [
             'driver' => 'local',
             //'root' => storage_path('app/public'),
+            'root' => '',
             //'url' => env('APP_URL').'/storage',
             'url' => 'media.boka.vbytes.se',
             'visibility' => 'public',
