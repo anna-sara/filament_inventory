@@ -41,7 +41,7 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public/'),
             //'url' => env('APP_URL').'/storage',
-            'url' => 'media.boka.vbytes.se/storage',
+            'url' => 'media.boka.vbytes.se',
             'visibility' => 'public',
             'throw' => false,
         ],
