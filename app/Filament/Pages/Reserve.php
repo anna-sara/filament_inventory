@@ -58,6 +58,7 @@ class Reserve extends BasePage implements HasTable
                         ImageColumn::make('image')
                         ->label('Bild')
                         ->size('100%')
+                        ->disk('public')
                         ->extraImgAttributes([
                             'class' => 'rounded-md',
                             'loading' => 'lazy'

@@ -74,6 +74,7 @@ class ItemResource extends Resource
                     ->live(),
                 FileUpload::make('image')
                     ->label('Image')
+                    ->disk('public')
                     ->directory('images')
                     ->translateLabel()
                     ->minSize(25)
@@ -147,6 +148,7 @@ class ItemResource extends Resource
                 ImageColumn::make('image')
                     ->label('Image')
                     ->translateLabel()
+                    ->disk('public')
                     //->visibility('private')
                     ->extraImgAttributes([
                         'class' => 'rounded-md',
