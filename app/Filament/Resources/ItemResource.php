@@ -277,7 +277,7 @@ class ItemResource extends Resource
                     Item::where('id', $record->id)->update(['reserved' => true]);
                     Mail::to($data['email'])
                     ->send(new ReservationCreatedUser($reservation));
-                    Mail::to(env('MAIL_FROM_ADDRESS'))
+                    Mail::to(env('MAIL_TO_ADDRESS'))
                     ->send(new ReservationCreated($reservation));
                 })
                 ->hidden(fn ($record) => $record->reserved)

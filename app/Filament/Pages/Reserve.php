@@ -31,6 +31,10 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\Layout\Grid;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationCreatedUser;
+use App\Mail\ReservationCreated;
+
 
 class Reserve extends BasePage implements HasTable
 {
@@ -128,13 +132,17 @@ class Reserve extends BasePage implements HasTable
                         ->required(),
                 ])
                 ->action(function (array $data, Item $record): void {
-                    Reserveditem::create([
+                    $reservation = Reserveditem::create([
                         'item_id' => $record->id,
                         'reserved_date' => Carbon::now(),
                         'username' => $data['username'],
                         'email' => $data['email']
                     ]);
                     Item::where('id', $record->id)->update(['reserved' => true]);
+                    Mail::to($data['email'])
+                    ->send(new ReservationCreatedUser($reservation));
+                    Mail::to(env('MAIL_TO_ADDRESS'))
+                    ->send(new ReservationCreated($reservation));
                     Notification::make()
                     ->title('Spelet är reserverat!')
                     ->body('Ett bekräftelsemail har skickats till emailadressen du uppgav. Läs det för mer info om utlämning av spelet.')
