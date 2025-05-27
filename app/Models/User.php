@@ -9,8 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Item;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -26,6 +28,11 @@ class User extends Authenticatable
         'password',
         'is_admin'
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_admin === 1;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
