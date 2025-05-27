@@ -25,6 +25,8 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationDeletedUser;
 
 
 class ReserveditemResource extends Resource
@@ -124,6 +126,14 @@ class ReserveditemResource extends Resource
                 ->button()
                 ->icon('heroicon-m-pencil-square')
                 ->iconPosition(IconPosition::After),
+                Tables\Actions\DeleteAction::make()
+                ->action(function (array $data, Reserveditem $record): void {
+                    $record->delete();
+                    Item::where('id', $record->item_id)->update(['reserved' => false]);
+                    Mail::to($record['email'])
+                    ->send(new ReservationDeletedUser($record));
+                })
+                
             ])
             ->bulkActions([
             //    Tables\Actions\BulkActionGroup::make([
