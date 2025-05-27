@@ -101,6 +101,8 @@ class Reserve extends BasePage implements HasTable
                     ->orderBy('desc', 'asc');
                    
             })
+            ->defaultPaginationPageOption(12)
+            ->paginated([12, 25, 50, 100, 'all'])
             ->contentGrid([
                 'sm' => 2,
                 'md' => 3,
