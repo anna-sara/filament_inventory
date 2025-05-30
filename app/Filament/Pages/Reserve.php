@@ -76,21 +76,24 @@ class Reserve extends BasePage implements HasTable
                         Stack::make([
                             TextColumn::make('players')
                                 ->label('Antal spelare')
+                                ->default('Ingen uppgift')
                                 ->sortable()
-                                ->prefix('Spelare: ')
-                                ->suffix(' st'),
+                                ->prefix('Spelare: '),
+                                //->suffix(' st'),
                             TextColumn::make('play_time')
                                 ->label('Speltid')
                                 ->sortable()
-                                ->prefix('Speltid: ')
+                                ->default('Ingen uppgift')
+                                ->prefix('Speltid (min): ')
                                 ->suffix(' min'),
                             TextColumn::make('age')
                                 ->label('Ålder')
                                 ->sortable()
+                                ->default('Ingen uppgift')
                                 ->prefix('Ålder: ')
-                                ->suffix(' år'),
-                        ])->extraAttributes(['class' => 'space-y-3'])                           
-                    ])->extraAttributes(['class' => 'space-y-3'])  
+                                //->suffix(' år'),
+                        ])->extraAttributes(['class' => 'space-y-3 h-full'])                           
+                    ])->extraAttributes(['class' => 'space-y-3 h-full'])  
                     
                 ])
             ])
