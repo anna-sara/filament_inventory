@@ -84,8 +84,8 @@ class Reserve extends BasePage implements HasTable
                                 ->label('Speltid')
                                 ->sortable()
                                 ->default('Ingen uppgift')
-                                ->prefix('Speltid (min): ')
-                                ->suffix(' min'),
+                                ->prefix('Speltid (min): '),
+                                //->suffix(' min'),
                             TextColumn::make('age')
                                 ->label('Ålder')
                                 ->sortable()
