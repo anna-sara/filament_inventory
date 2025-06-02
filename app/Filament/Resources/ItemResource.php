@@ -269,7 +269,7 @@ class ItemResource extends Resource
                         ->translateLabel()
                         ->required(),
                     TextInput::make('phone')
-                        ->label('Nummer')
+                        ->label('Phone')
                         ->translateLabel()
                         ->tel() 
                         ->required(),

@@ -138,7 +138,7 @@ class Reserve extends BasePage implements HasTable
                         ->email()
                         ->required(),
                     TextInput::make('phone')
-                        ->label('Nummer')
+                        ->label('Telefonnummer')
                         ->tel() 
                         ->required(),
                     Checkbox::make('gdpr')
