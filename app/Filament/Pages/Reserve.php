@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationCreatedUser;
 use App\Mail\ReservationCreated;
+use Filament\Forms\Components\Checkbox;
 
 
 class Reserve extends BasePage implements HasTable
@@ -134,14 +135,23 @@ class Reserve extends BasePage implements HasTable
                         ->required(),
                     TextInput::make('email')
                         ->label('Email')
+                        ->email()
                         ->required(),
+                    TextInput::make('phone')
+                        ->label('Nummer')
+                        ->tel() 
+                        ->required(),
+                    Checkbox::make('gdpr')
+                        ->label('Genom att checka i denna rutan godkänner du att vi lagrar din mailadress och telefonnummer.')
+                        ->accepted(),
                 ])
                 ->action(function (array $data, Item $record): void {
                     $reservation = Reserveditem::create([
                         'item_id' => $record->id,
                         'reserved_date' => Carbon::now(),
                         'username' => $data['username'],
-                        'email' => $data['email']
+                        'email' => $data['email'],
+                        'phone' => $data['phone']
                     ]);
                     Item::where('id', $record->id)->update(['reserved' => true]);
                     Mail::to($data['email'])
@@ -166,9 +176,9 @@ class Reserve extends BasePage implements HasTable
                         ImageEntry::make('image')
                         ->label('Bild')
                         ->width(300)
-                        ->height('auto')
-                        ->disk('local')
-                        ->visibility('private'),
+                        ->height('auto'),
+                        //->disk('local')
+                        //->visibility('private'),
                         TextEntry::make('desc')
                         ->label('Beskrivning'),
                         TextEntry::make('acquisition_date')

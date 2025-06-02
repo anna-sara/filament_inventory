@@ -37,6 +37,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Checkbox;
 
 
 class ItemResource extends Resource
@@ -123,7 +124,7 @@ class ItemResource extends Resource
                     ->default(null)
                     ->hidden(fn ($get): string => $get('type') == 'item'),
                 Toggle::make('can_be_loaned')
-                    ->label('Can be loaned')
+                    ->label('Loanable')
                     ->translateLabel()
                     ->hidden(fn ($get): string => $get('type') == 'game'),
             ]);
@@ -264,15 +265,25 @@ class ItemResource extends Resource
                         ->required(),
                     TextInput::make('email')
                         ->label('Email')
+                        ->email()
                         ->translateLabel()
                         ->required(),
+                    TextInput::make('phone')
+                        ->label('Nummer')
+                        ->translateLabel()
+                        ->tel() 
+                        ->required(),
+                    Checkbox::make('gdpr')
+                        ->label('Genom att checka i denna rutan godkänner du att vi lagrar din mailadress och telefonnummer.')
+                        ->accepted(),
                 ])
                 ->action(function (array $data, Item $record): void {
                     $reservation = Reserveditem::create([
                         'item_id' => $record->id,
                         'reserved_date' => Carbon::now(),
                         'username' => $data['username'],
-                        'email' => $data['email']
+                        'email' => $data['email'],
+                        'phone' => $data['phone']
                     ]);
                     Item::where('id', $record->id)->update(['reserved' => true]);
                     Mail::to($data['email'])

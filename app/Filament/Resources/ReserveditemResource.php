@@ -57,10 +57,18 @@ class ReserveditemResource extends Resource
                 TextInput::make('username')
                    ->label('Name')
                    ->translateLabel()
-                   ->default(null),
+                   ->default(null)
+                    ->required(),
                 TextInput::make('email')
                    ->label('Email')
-                   ->default(null),
+                   ->default(null)
+                   ->email()
+                    ->required(),
+                TextInput::make('phone')
+                   ->label('Phone')
+                   ->default(null)
+                    ->tel() 
+                    ->required(),
                 Section::make('')
                 ->schema([
                     Toggle::make('delivered')
@@ -93,6 +101,10 @@ class ReserveditemResource extends Resource
                         ->label('Email')
                         ->sortable()
                         ->icon('heroicon-m-envelope'),
+                    TextColumn::make('phone')
+                        ->label('Phone')
+                        ->sortable()
+                        ->icon('heroicon-m-phone'),
                     TextColumn::make('reserved_date')
                         ->label('Reservation date')
                         ->translateLabel()

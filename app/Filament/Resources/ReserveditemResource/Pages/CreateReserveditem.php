@@ -22,6 +22,7 @@ class CreateReserveditem extends CreateRecord
             $data['user_id'] = auth()->id();
             $data['username'] = auth()->user()->name;
             $data['email'] = auth()->user()->email;
+            $data['phone'] = auth()->user()->phone;
         }
         $data['reserved_date'] = Carbon::now();
 
