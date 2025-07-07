@@ -19,7 +19,7 @@ class CreateItem extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
          
-        if ($data['type'] == "game")
+        if ($data['type'] == "game" || $data['type'] == "literature")
          {
              $data['can_be_loaned'] = true;
          }

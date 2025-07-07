@@ -70,6 +70,7 @@ class ItemResource extends Resource
                     ->options([
                         'game' => __('Game'),
                         'item' => __('Item'),
+                        'literature' => __('Literature')
                     ])
                     ->default('game')
                     ->live(),
@@ -96,7 +97,7 @@ class ItemResource extends Resource
                     ->minValue(0)
                     ->maxValue(1000)
                     ->default(0)
-                    ->hidden(fn ($get): string => $get('type') == 'game'),
+                    ->hidden(fn ($get): string => $get('type') == 'game' || $get('type') == 'literature' ),
                 Select::make('category_id')
                     ->label('Category')
                     ->translateLabel()
@@ -110,23 +111,23 @@ class ItemResource extends Resource
                     ->translateLabel()
                     ->maxLength(255)
                     ->default(null)
-                    ->hidden(fn ($get): string => $get('type') == 'item'),
+                    ->hidden(fn ($get): string => $get('type') == 'item' || $get('type') == 'literature' ),
                 TextInput::make('players')
                     ->label('Players')
                     ->translateLabel()
                     ->maxLength(255)
                     ->default(null)
-                    ->hidden(fn ($get): string => $get('type') == 'item'),
+                    ->hidden(fn ($get): string => $get('type') == 'item' || $get('type') == 'literature' ),
                 TextInput::make('play_time')
                     ->label('Play time')
                     ->translateLabel()
                     ->maxLength(255)
                     ->default(null)
-                    ->hidden(fn ($get): string => $get('type') == 'item'),
+                    ->hidden(fn ($get): string => $get('type') == 'item'|| $get('type') == 'literature' ),
                 Toggle::make('can_be_loaned')
                     ->label('Loanable')
                     ->translateLabel()
-                    ->hidden(fn ($get): string => $get('type') == 'game'),
+                    ->hidden(fn ($get): string => $get('type') == 'game' || $get('type') == 'literature' ),
             ]);
     }
 
@@ -170,20 +171,52 @@ class ItemResource extends Resource
                     ->default(false),
             ])
             ->filters([
-                SelectFilter::make('type')
-                ->translateLabel()
-                ->multiple()
-                ->options([
-                    'game' => __('Game'),
-                    'item' => __('Item'),
-                ]),
-                SelectFilter::make('category_id')
-                ->label('Category')
-                ->translateLabel()
-                ->multiple()
-                ->options(
-                    Category::all()->pluck('name', 'id'),
-                ),
+                Filter::make('filters')
+                ->form([
+                    Select::make('type')
+                        ->label('Type')
+                        ->live()
+                        ->translateLabel()
+                        ->options([
+                            'game' => __('Game'),
+                            'literature' => __('Literature'),
+                            'item' => __('Item')
+                        ]),
+                    Select::make('category_id')
+                        ->multiple()
+                        ->translateLabel()
+                        ->label('Category literature')
+                        ->options(Category::all()->whereIn('type', 'literature')->pluck('name', 'id'))
+                        ->hidden(fn ($get): string   => $get('type') == 'game' || $get('type') == 'item'|| $get('type') == ''),
+                    Select::make('category_id')
+                        ->multiple()
+                        ->translateLabel()
+                        ->label('Category games')
+                        ->options(Category::all()->whereIn('type', 'game')->pluck('name', 'id'))
+                        ->hidden(fn ($get): string  => $get('type') == 'literature' ||  $get('type') == 'item'|| $get('type') == ''),
+                    Select::make('category_id')
+                        ->multiple()
+                        ->translateLabel()
+                        ->label('Category items')
+                        ->options(Category::all()->whereIn('type', 'item')->pluck('name', 'id'))
+                        ->hidden(fn ($get): string  => $get('type') == 'literature' || $get('type') == 'game'|| $get('type') == ''),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['type'],
+                            fn (Builder $query, $type): Builder => $query->where('type', $type),
+                        )
+                        ->when(
+                            $data['category_id'],
+                            fn (Builder $query, $category_id): Builder => $query->whereIn('category_id', $category_id),
+                        );
+                })
+                ->columns([
+                    'deafult' => 1,
+                    'md' => 2,
+                ])
+                ->columnSpan(2),
                 Filter::make('reserved')
                 ->label('Available')
                 ->translateLabel()
@@ -207,9 +240,9 @@ class ItemResource extends Resource
                         ImageEntry::make('image') 
                         ->translateLabel()
                         ->width(300)
-                        ->height('auto')
-                        ->disk('local')
-                        ->visibility('private'),
+                        ->height('auto'),
+                        //->disk('local')
+                        //->visibility('private'),
                         TextEntry::make('desc')
                         ->label('Description')
                         ->translateLabel(),
@@ -227,7 +260,7 @@ class ItemResource extends Resource
                         ->translateLabel(),
                     ])
                     ->columns()
-                    ->hidden(fn ($record) => $record->type === "item"),
+                    ->hidden(fn ($record) => $record->type === "item" || $record->type === 'literature'),
                     Section::make('')
                     ->translateLabel()
                     ->schema([
@@ -246,8 +279,25 @@ class ItemResource extends Resource
                         ->translateLabel(),
                     ])
                     ->columns()
-                    ->hidden(fn ($record) => $record->type === "game"),
-                    ]),
+                    ->hidden(fn ($record) => $record->type === "game" || $record->type === 'literature'),
+                    Section::make('')
+                    ->translateLabel()
+                    ->schema([
+                        ImageEntry::make('image')
+                        ->translateLabel(),
+                        TextEntry::make('desc')
+                        ->label('Description')
+                        ->translateLabel(),
+                        TextEntry::make('acquisition_date')
+                        ->translateLabel(),
+                        TextEntry::make('category.name')
+                        ->translateLabel(),
+                        TextEntry::make('cost')
+                        ->translateLabel(),
+                    ])
+                    ->columns()
+                    ->hidden(fn ($record) => $record->type === "game" || $record->type === 'item'),
+                ]),
                
                 Tables\Actions\EditAction::make()
                 ->button()

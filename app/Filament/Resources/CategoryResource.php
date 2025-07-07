@@ -50,8 +50,9 @@ class CategoryResource extends Resource
                     ->translateLabel()
                     ->required()
                     ->options([
-                        'game' => 'Game',
-                        'item' => 'Item',
+                        'game' => __('Game'),
+                        'literature' => __('Literature'),
+                        'item' => __('Item')
                     ]),
             ]);
     }

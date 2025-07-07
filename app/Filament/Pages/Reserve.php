@@ -49,7 +49,9 @@ class Reserve extends BasePage implements HasTable
     public static function table(Table $table): Table
     {
         return $table
-            ->query( Item::where('can_be_loaned', true)->where('type', "game"))
+            ->query( Item::where('can_be_loaned', true)->whereIn('type', ["game", "literature"]))
+            ->emptyStateHeading('Inga resultat')
+            ->searchable(true)
             ->columns([
                 Grid::make()
                 ->columns(1)
@@ -93,7 +95,9 @@ class Reserve extends BasePage implements HasTable
                                 ->default('Ingen uppgift')
                                 ->prefix('Ålder: ')
                                 //->suffix(' år'),
-                        ])->extraAttributes(['class' => 'space-y-3 h-full'])                           
+                        ])
+                        ->extraAttributes(['class' => 'space-y-3 h-full'])
+                        ->hidden(fn ($record) => $record->type === 'literature'),                     
                     ])->extraAttributes(['class' => 'space-y-3 h-full'])  
                     
                 ])
@@ -113,11 +117,43 @@ class Reserve extends BasePage implements HasTable
                 'xl' => 4,
             ])
             ->filters([
-                SelectFilter::make('category_id')
-                ->multiple()
-                ->preload()
-                ->label('Kategori')
-                ->options(Category::all()->where('type', 'game')->pluck('name', 'id')),
+                Filter::make('filters')
+                ->form([
+                    Select::make('type')
+                        ->label('Typ')
+                        ->live()
+                        ->options([
+                            'game' => __('Game'),
+                            'literature' => __('Literature')
+                        ]),
+                    Select::make('category_id')
+                        ->multiple()
+                        ->label('Kategorier Litteratur')
+                        ->options(Category::all()->whereIn('type', 'literature')->pluck('name', 'id'))
+                        
+                        ->hidden(fn ($get): string   => $get('type') == 'game' || $get('type') == ''),
+                    Select::make('category_id')
+                        ->multiple()
+                        ->label('Kategorier Spel')
+                        ->options(Category::all()->whereIn('type', 'game')->pluck('name', 'id'))
+                        ->hidden(fn ($get): string  => $get('type') == 'literature' || $get('type') == ''),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['type'],
+                            fn (Builder $query, $type): Builder => $query->where('type', $type),
+                        )
+                        ->when(
+                            $data['category_id'],
+                            fn (Builder $query, $category_id): Builder => $query->whereIn('category_id', $category_id),
+                        );
+                })
+                ->columns([
+                    'deafult' => 1,
+                    'md' => 2,
+                ])
+                ->columnSpan(2),
                 Filter::make('reserved')
                 ->label('Tillgänglig')
                 ->query(fn (Builder $query): Builder => $query->where('reserved', false))
@@ -166,34 +202,54 @@ class Reserve extends BasePage implements HasTable
                     ->send();
                 })
                 ->hidden(fn ($record) => $record->reserved),
-                Action::make('Mer info')
-                ->modalSubmitAction(false)  
-                ->button()
-                ->color('primary') 
+                 Action::make('More info')
+                ->translateLabel()
+                ->modalSubmitAction(false)   
                 ->infolist([
-                    Section::make('Spel')
+                    Section::make('')
                     ->schema([
-                        ImageEntry::make('image')
-                        ->label('Bild')
+                        ImageEntry::make('image') 
+                        ->translateLabel()
                         ->width(300)
                         ->height('auto'),
                         //->disk('local')
                         //->visibility('private'),
                         TextEntry::make('desc')
-                        ->label('Beskrivning'),
+                        ->label('Description')
+                        ->translateLabel(),
                         TextEntry::make('acquisition_date')
-                        ->label('Inköpsdatum'),
+                        ->translateLabel(),
                         TextEntry::make('category.name')
-                        ->label('Kategori'),
+                        ->translateLabel(),
                         TextEntry::make('players')
-                        ->label('Antal spelare'),
+                        ->translateLabel(),
                         TextEntry::make('play_time')
-                        ->label('Speltid'),
+                        ->translateLabel(),
                         TextEntry::make('age')
-                        ->label('Ålder'),
+                        ->translateLabel(),
+                        TextEntry::make('cost')
+                        ->translateLabel(),
                     ])
-                    ->columns(),
-                ]), 
+                    ->columns()
+                    ->hidden(fn ($record) =>  $record->type === 'literature'),
+                    Section::make('')
+                    ->translateLabel()
+                    ->schema([
+                        ImageEntry::make('image')
+                        ->translateLabel(),
+                        TextEntry::make('desc')
+                        ->label('Description')
+                        ->translateLabel(),
+                        TextEntry::make('acquisition_date')
+                        ->translateLabel(),
+                        TextEntry::make('category.name')
+                        ->translateLabel(),
+                        TextEntry::make('cost')
+                        ->translateLabel(),
+                    ])
+                    ->columns()
+                    ->hidden(fn ($record) => $record->type === "game"),
+                ]),
             ])
             ->bulkActions([
             ]);

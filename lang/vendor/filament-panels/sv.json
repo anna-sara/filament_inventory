@@ -36,5 +36,9 @@
     "Total number of games": "Totalt antal spel i lager",
     "Total number of items": "Totalt antal saker i lager",
     "Reserved games and items": "Reserverade spel och saker",
-    "Phone": "Telefonnummer"
+    "Phone": "Telefonnummer",
+    "Literature": "Litteratur",
+    "Category literature": "Kategori litteratur",
+    "Category games": "Kategori spel",
+    "Category items": "Kategori saker"
 }
