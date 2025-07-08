@@ -67,6 +67,7 @@ class ItemResource extends Resource
             ->schema([
                 Radio::make('type')
                     ->translateLabel()
+                    ->live()
                     ->options([
                         'game' => __('Game'),
                         'item' => __('Item'),
@@ -99,9 +100,20 @@ class ItemResource extends Resource
                     ->default(0)
                     ->hidden(fn ($get): string => $get('type') == 'game' || $get('type') == 'literature' ),
                 Select::make('category_id')
-                    ->label('Category')
+                    ->label('Category items')
                     ->translateLabel()
-                    ->options(Category::all()->pluck('name', 'id')),
+                    ->options(Category::where('type', 'item')->pluck('name', 'id'))
+                    ->hidden(fn ($get): string => $get('type') == 'game' || $get('type') == 'literature'  ),
+                Select::make('category_id')
+                    ->label('Category games')
+                    ->translateLabel()
+                    ->options(Category::where('type', 'game')->pluck('name', 'id'))
+                     ->hidden(fn ($get): string => $get('type') == 'item' || $get('type') == 'literature'  ),
+                Select::make('category_id')
+                    ->label('Category literature')
+                    ->translateLabel()
+                    ->options(Category::where('type', 'literature')->pluck('name', 'id'))
+                    ->hidden(fn ($get): string => $get('type') == 'game' || $get('type') == 'item'  ),
                 TextInput::make('cost')
                     ->label('Price')
                     ->translateLabel()
