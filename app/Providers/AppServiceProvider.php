@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -34,5 +36,11 @@ class AppServiceProvider extends ServiceProvider
         FilamentColor::register([
             'primary' => Color::hex('#0080bb'),
         ]);
+
+        Gate::define('viewPulse', function (User $user) {
+            if ($user->is_admin ) {
+                return true;
+            };
+        });
     }
 }
