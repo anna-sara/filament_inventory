@@ -29,7 +29,7 @@ class ReservationCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Created',
+            subject: 'Reservation skapad',
         );
     }
 
@@ -44,6 +44,7 @@ class ReservationCreated extends Mailable
                 'reservationName' => $this->reservation->username,
                 'reservationDesc' => Item::where('id', $this->reservation->item_id)->pluck('desc')->first(),
                 'reservationEmail' => $this->reservation->email,
+                'reservationPhone' => $this->reservation->phone,
             ],
         );
     }

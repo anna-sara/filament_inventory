@@ -30,7 +30,7 @@ class ReturnDateReminder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Påminnelse om återlämning',
+            subject: 'vBytes - Påminnelse om återlämning',
         );
     }
 

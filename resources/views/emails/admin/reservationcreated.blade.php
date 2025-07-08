@@ -7,5 +7,6 @@
     <h1>Reservation skapad</h1>
     <p>{{ $reservationName }} har reserverat {{ $reservationDesc }}</p>
     <p>Mail: {{ $reservationEmail }}</p>
+    <p>Telefon: {{ $reservationPhone }}</p>
 </body>
 </html>

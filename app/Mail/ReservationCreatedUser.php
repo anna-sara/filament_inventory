@@ -27,7 +27,7 @@ class ReservationCreatedUser extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation skapad',
+            subject: 'vBytes - Reservation skapad',
         );
     }
 

@@ -29,7 +29,7 @@ class Delivered extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Levererad',
+            subject: 'vBytes - Vara levererad',
         );
     }
 

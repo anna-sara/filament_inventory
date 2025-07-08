@@ -27,7 +27,7 @@ class ReservationDeletedUser extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation borttagen',
+            subject: 'vBytes - Reservation borttagen',
         );
     }
 
