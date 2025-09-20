@@ -45,6 +45,8 @@ class Reserve extends BasePage implements HasTable
 
     protected static string $view = 'filament.pages.reserve';
 
+    protected static ?string $title = "Reservera spel | vBytes Inventory";
+
     
     public static function table(Table $table): Table
     {
