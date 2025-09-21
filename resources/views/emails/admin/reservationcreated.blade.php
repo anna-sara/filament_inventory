@@ -11,7 +11,7 @@
                     <!-- Header -->
                     <tr>
                         <td class="header" style="background-color: #0080bb; padding: 20px; text-align: center; color: white; font-size: 18px;">
-                            <img style="height: 80px; width: auto"class=" w-auto h-full" src="/img/logo.png" alt="logo">
+                            <img style="height: 80px; width: auto"class=" w-auto h-full" src="https://boka.vbytes.se/img/logo.png" alt="logo">
                             
                         </td>
                     </tr>
