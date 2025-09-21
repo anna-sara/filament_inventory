@@ -35,10 +35,12 @@
     "Email verified at": "Email verifierad den",
     "Total number of games": "Totalt antal spel i lager",
     "Total number of items": "Totalt antal saker i lager",
-    "Reserved games and items": "Reserverade spel och saker",
+    "Reservations at the moment": "Nuvarande reservationer",
+    "Reservations over time": "Alla reservationer",
     "Phone": "Telefonnummer",
     "Literature": "Litteratur",
     "Category literature": "Kategori litteratur",
     "Category games": "Kategori spel",
-    "Category items": "Kategori saker"
+    "Category items": "Kategori saker",
+    "Reservations by month": "Reservationer per månad"
 }

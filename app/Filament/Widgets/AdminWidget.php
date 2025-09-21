@@ -19,7 +19,8 @@ class AdminWidget extends BaseWidget
             //Card::make(__('Total number of users'), User::count() ),
             Card::make(__('Total number of games'), Item::where('type', 'game')->count() ),
             Card::make(__('Total number of items'), Item::where('type', 'item')->count() ),
-            Card::make(__('Reserved games and items'), Reserveditem::count() ),
+            Card::make(__('Reservations at the moment'), Reserveditem::where('returned_date', null)->withTrashed()->count() ),
+            Card::make(__('Reservations over time'), Reserveditem::withTrashed()->count() ),
         ];
     }
 
