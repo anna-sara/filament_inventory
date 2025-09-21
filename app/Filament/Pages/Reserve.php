@@ -219,8 +219,6 @@ class Reserve extends BasePage implements HasTable
                         TextEntry::make('desc')
                         ->label('Description')
                         ->translateLabel(),
-                        TextEntry::make('acquisition_date')
-                        ->translateLabel(),
                         TextEntry::make('category.name')
                         ->translateLabel(),
                         TextEntry::make('players')
@@ -228,8 +226,6 @@ class Reserve extends BasePage implements HasTable
                         TextEntry::make('play_time')
                         ->translateLabel(),
                         TextEntry::make('age')
-                        ->translateLabel(),
-                        TextEntry::make('cost')
                         ->translateLabel(),
                     ])
                     ->columns()
@@ -242,11 +238,7 @@ class Reserve extends BasePage implements HasTable
                         TextEntry::make('desc')
                         ->label('Description')
                         ->translateLabel(),
-                        TextEntry::make('acquisition_date')
-                        ->translateLabel(),
                         TextEntry::make('category.name')
-                        ->translateLabel(),
-                        TextEntry::make('cost')
                         ->translateLabel(),
                     ])
                     ->columns()
