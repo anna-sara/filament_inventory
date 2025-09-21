@@ -8,6 +8,8 @@ use Filament\Widgets\StatsOverviewWidget\Card;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Reserveditem;
+use Filament\Support\Enums\IconPosition;
+
 
 class AdminWidget extends BaseWidget
 {
@@ -17,10 +19,10 @@ class AdminWidget extends BaseWidget
     {
         return [
             //Card::make(__('Total number of users'), User::count() ),
-            Card::make(__('Total number of games'), Item::where('type', 'game')->count() ),
-            Card::make(__('Total number of items'), Item::where('type', 'item')->count() ),
-            Card::make(__('Reservations at the moment'), Reserveditem::where('returned_date', null)->count() ),
-            Card::make(__('Reservations over time'), Reserveditem::withTrashed()->withTrashed()->count() ),
+            Stat::make(__('Total amount of games'), Item::where('type', 'game')->count() ),
+            Stat::make(__('Total amount of items'), Item::where('type', 'item')->count() ),
+            Stat::make(__('Reservations at the moment'), Reserveditem::where('returned_date', null)->count() ),
+            Stat::make(__('Reservations over time'), Reserveditem::withTrashed()->withTrashed()->count() ),
         ];
     }
 

@@ -10,6 +10,7 @@ use App\Models\Reserveditem;
 class ReservationsChart extends ChartWidget
 {
     protected static ?string $heading = "Reservations by month";
+    protected static ?string $maxHeight = '300px';
     
     
     protected function getData(): array

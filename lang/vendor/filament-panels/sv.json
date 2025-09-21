@@ -33,8 +33,8 @@
     "Is admin": "Admin",
     "Password": "Lösenord",
     "Email verified at": "Email verifierad den",
-    "Total number of games": "Totalt antal spel i lager",
-    "Total number of items": "Totalt antal saker i lager",
+    "Total amount of games": "Totalt antal spel i lager",
+    "Total amount of items": "Totalt antal saker i lager",
     "Reservations at the moment": "Nuvarande reservationer",
     "Reservations over time": "Alla reservationer",
     "Phone": "Telefonnummer",
@@ -42,5 +42,7 @@
     "Category literature": "Kategori litteratur",
     "Category games": "Kategori spel",
     "Category items": "Kategori saker",
-    "Reservations by month": "Reservationer per månad"
+    "Reservations by month": "Reservationer per månad",
+    "Amount of games in inventory": "Antal spel i lager",
+    "Amount of items in inventory": "Antal saker i lager"
 }
