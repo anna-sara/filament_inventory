@@ -17,12 +17,29 @@ class AdminWidget extends BaseWidget
     
     protected function getStats(): array
     {
+        $items = Reserveditem::withTrashed()->with('item')->whereHas('item', function($query){
+            return $query->where('type', 'game');
+        })->get()->groupBy('item_id');
+
+        $itemName = "";
+
+        foreach ($items as $item){
+            $itemCount = 0;
+        
+            if($item->count() > $itemCount) {
+                $itemName = $item[0]->item->desc;
+                $itemCount = $item->count();
+            }
+                
+            
+        }
         return [
             //Card::make(__('Total number of users'), User::count() ),
             Stat::make(__('Total amount of games'), Item::where('type', 'game')->count() ),
             Stat::make(__('Total amount of items'), Item::where('type', 'item')->count() ),
             Stat::make(__('Reservations at the moment'), Reserveditem::where('returned_date', null)->count() ),
-            Stat::make(__('Reservations over time'), Reserveditem::withTrashed()->withTrashed()->count() ),
+            Stat::make(__('Reservations over time'), Reserveditem::withTrashed()->count() ),
+            Stat::make(__('Most reserved game'), $itemName),
         ];
     }
 
