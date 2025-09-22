@@ -43,8 +43,6 @@ class PopularCategoryChart extends ChartWidget
             $itemCategoriesCount[] = $item->count();
         }
 
-        dd($items);
-                
         return [
             'datasets' => [
                 [
