@@ -25,7 +25,9 @@ class PopularCategoryChart extends ChartWidget
 
     protected function getData(): array
     {
-        $categories = Category::where('type', 'game')->get()->sortBy('id')->sortDesc();
+        $categories = Category::where('type', 'game')->get()->sortBy('id');
+
+        //dd($categories);
         $categoryNames = [];
         
         foreach ($categories as $obj){
@@ -34,13 +36,13 @@ class PopularCategoryChart extends ChartWidget
 
         $items = Reserveditem::withTrashed()->with('item')->whereHas('item', function($query){
             return $query->where('type', 'game');
-        })->get()->groupBy('item.category_id')->sortBy('item.category_id')->sortDesc();
+        })->get()->groupBy('item.category_id')->sortBy('item.category_id');
 
 
         $itemCategoriesCount = [];
 
         foreach ($items as $item){
-            $itemCategoriesCount[] = $item->count();
+            $itemCategoriesCount[] = count($item);
         }
 
         return [

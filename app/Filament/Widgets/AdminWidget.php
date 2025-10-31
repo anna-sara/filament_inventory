@@ -22,17 +22,15 @@ class AdminWidget extends BaseWidget
         })->get()->groupBy('item_id');
 
         $itemName = "";
+        $itemCount = 0;
 
         foreach ($items as $item){
-            $itemCount = 0;
-        
-            if($item->count() > $itemCount) {
+            if(count($item) > $itemCount) {
                 $itemName = $item[0]->item->desc;
-                $itemCount = $item->count();
-            }
-                
-            
+                $itemCount = count($item);
+            } 
         }
+
         return [
             //Card::make(__('Total number of users'), User::count() ),
             Stat::make(__('Total amount of games'), Item::where('type', 'game')->count() ),
