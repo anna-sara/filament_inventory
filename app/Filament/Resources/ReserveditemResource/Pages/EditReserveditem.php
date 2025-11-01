@@ -25,13 +25,13 @@ class EditReserveditem extends EditRecord
      protected function mutateFormDataBeforeSave(array $data): array
     {
        
-       if ($data['delivered'])
+       if ($data['delivered'] && !$data['returned'])
         {
             $data['delivered_date'] = Carbon::now();
             $data['return_date'] = Carbon::now()->addMonths(1);
         }
 
-        if ($data['returned'])
+        if ($data['returned'] && $data['delivered'])
         {
             $data['returned_date'] = Carbon::now();
         }
