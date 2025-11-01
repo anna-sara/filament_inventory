@@ -28,7 +28,7 @@ class PopularCategoryChart extends ChartWidget
     {
         $categories = Category::get()->sortBy('id')->pluck('name');
 
-        $items = Reserveditem::withTrashed()->with('item')->get()->groupBy('item.category_id')->orderBy('item.category_id', 'desc');
+        $items = Reserveditem::withTrashed()->with('item')->get()->groupBy('item.category_id')->sortByDesc('item.category_id');
         $itemCategoriesCount = [];
 
         foreach ($items as $item){
