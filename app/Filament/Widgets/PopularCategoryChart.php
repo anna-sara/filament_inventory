@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\ChartWidget;
 use App\Models\Reserveditem;
 use App\Models\Category;
+use App\Models\Item;
 
 
 class PopularCategoryChart extends ChartWidget
@@ -26,17 +27,17 @@ class PopularCategoryChart extends ChartWidget
     protected function getData(): array
     {
         $categories = Category::where('type', 'game')->get()->sortBy('id')->pluck('name');
-        //$categoryNames = [];
-        
-        //foreach ($categories as $obj){
-        //    $categoryNames[] = $obj->name;
-        //}
 
-        $items = Reserveditem::withTrashed()->with('item')->get()->groupBy('item.category_id');
+        $items = Reserveditem::withTrashed()->with('item')->get()->groupBy('item.category_id')->sortByDesc('item.category_id');
         $itemCategoriesCount = [];
 
         foreach ($items as $item){
-            $itemCategoriesCount[] = count($item);
+            $item1 = Item::where('id', $item[0]->item_id)->get();
+            $type = Category::where('id', $item1[0]->category_id)->get();
+            if ($type[0]->type === "game") {
+                 $itemCategoriesCount[] = count($item);
+            }
+           
         }
 
         return [
