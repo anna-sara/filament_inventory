@@ -35,6 +35,7 @@ class AdminWidget extends BaseWidget
             //Card::make(__('Total number of users'), User::count() ),
             Stat::make(__('Total amount of games'), Item::where('type', 'game')->count() ),
             Stat::make(__('Total amount of items'), Item::where('type', 'item')->count() ),
+            Stat::make(__('Total amount of literature'), Item::where('type', 'literature')->count() ),
             Stat::make(__('Reservations at the moment'), Reserveditem::where('returned_date', null)->count() ),
             Stat::make(__('Reservations over time'), Reserveditem::withTrashed()->count() ),
             Stat::make(__('Most reserved game'), $itemName),
