@@ -25,18 +25,16 @@ class PopularCategoryChart extends ChartWidget
 
     protected function getData(): array
     {
-        $categories = Category::where('type', 'game')->get()->sortBy('id');
-
-        //dd($categories);
-        $categoryNames = [];
+        $categories = Category::where('type', 'game')->get()->sortBy('id')->pluck('name');
+        //$categoryNames = [];
         
-        foreach ($categories as $obj){
-            $categoryNames[] = $obj->name;
-        }
+        //foreach ($categories as $obj){
+        //    $categoryNames[] = $obj->name;
+        //}
 
         $items = Reserveditem::withTrashed()->with('item')->whereHas('item', function($query){
             return $query->where('type', 'game');
-        })->get()->groupBy('item.category_id')->sortByDesc('item.category_id');
+        })->get()->groupBy('item.category_id')->sortBy('item.category_id');
 
 
         $itemCategoriesCount = [];
@@ -54,7 +52,7 @@ class PopularCategoryChart extends ChartWidget
                     "hoverOffset" => 4,
                 ],
             ],
-            'labels' => $categoryNames,
+            'labels' => $categories,
             
         ];
     }
