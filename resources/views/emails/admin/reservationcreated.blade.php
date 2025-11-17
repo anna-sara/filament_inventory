@@ -28,7 +28,7 @@
                     <!-- Footer -->
                     <tr>
                         <td class="footer" style="background-color: #0080bb; padding: 40px; text-align: center; color: white; font-size: 14px;">
-                        Since 2016 | vBytes
+                        Since 2020 | vBytes
                         </td>
                     </tr>
                 </table>
